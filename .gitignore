@@ -1,0 +1,6 @@
+*.o
+*.out
+bin/
+build/
+.vscode/
+morpion_exe
