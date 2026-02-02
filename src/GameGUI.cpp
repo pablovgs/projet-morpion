@@ -45,17 +45,34 @@ void GameGUI::run() {
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) window.close();
+            if (event.type == sf::Event::Closed) 
+                window.close();
             
             if (event.type == sf::Event::MouseButtonPressed && !engine.isGameOver()) {
-                // On transforme les pixels du clic en coordonnées (0, 1 ou 2)
                 int row = event.mouseButton.y / cellSize;
                 int col = event.mouseButton.x / cellSize;
                 engine.playTurn(row, col);
+
+                // Si le coup vient de terminer la partie, on change le titre
+                if (engine.isGameOver()) {
+                    if (engine.checkWin()) {
+                        window.setTitle("Victoire de " + engine.getCurrentPlayer()->getName() + " ! [R] pour rejouer");
+                    } else {
+                        window.setTitle("Match Nul ! [R] pour rejouer");
+                    }
+                }
+            }
+
+            // Appuie sur R pour recommencer
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::R && engine.isGameOver()) {
+                    engine.reset();
+                    window.setTitle("Morpion POO - SFML");
+                }
             }
         }
 
-        window.clear(sf::Color(40, 40, 40)); // Fond gris foncé
+        window.clear(sf::Color(40, 40, 40));
         drawGrid();
         drawPieces();
         window.display();
