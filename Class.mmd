@@ -1,0 +1,60 @@
+classDiagram
+    class Player {
+        <<abstract>>
+        #string name
+        #char symbol
+        +Player(name, symbol)
+        +virtual ~Player()
+        +getName() string
+        +getSymbol() char
+    }
+    
+    class HumanPlayer {
+        +HumanPlayer(name, symbol)
+    }
+
+    class Cell {
+        -char symbol
+        +Cell()
+        +getSymbol() char
+        +setSymbol(char s)
+    }
+
+    class Grid {
+        -Cell* cases[3][3]
+        +Grid()
+        +~Grid()
+        +updateCell(int r, int c, char s) bool
+        +getCellSymbol(int r, int c) char
+        +reset()
+    }
+
+    class GameEngine {
+        -Grid grid
+        -Player* p1
+        -Player* p2
+        -Player* currentPlayer
+        -bool gameOver
+        +GameEngine()
+        +~GameEngine()
+        +playTurn(int r, int c) bool
+        +checkWin() bool
+        +checkDraw() bool
+        +reset()
+    }
+
+    class GameGUI {
+        -RenderWindow window
+        -GameEngine engine
+        +GameGUI()
+        +run() void
+        -drawGrid() void
+        -drawPieces() void
+    }
+
+    %% Relations
+    Player <|-- HumanPlayer : Héritage (Polymorphisme)
+    Grid *-- Cell : Composition (Pointeurs)
+    GameEngine *-- Grid : Composition
+    GameEngine o-- Player : Agrégation (Pointeurs)
+    GameGUI --> GameEngine : Utilisation

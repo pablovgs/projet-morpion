@@ -1,29 +1,11 @@
-# Variables
-CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
+# Nom du programme
+NAME = morpion_exe
 
-# Nom de l'exécutable
-EXEC = morpion_exe
+# La règle principale
+all:
+	g++ -std=c++17 -Iinclude src/*.cpp -o $(NAME) -lsfml-graphics -lsfml-window -lsfml-system
+	rm -f *.o
 
-# Liste des fichiers sources (tout ce qui est dans src/)
-SRC = $(wildcard src/*.cpp)
-OBJ = $(SRC:.cpp=.o)
-
-# Règle principale
-all: $(EXEC)
-
-# Création de l'exécutable
-$(EXEC): $(OBJ)
-	$(CXX) $(OBJ) -o $(EXEC) $(LDFLAGS)
-
-# Compilation des fichiers .o
-src/%.o: src/%.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# Nettoyage des fichiers temporaires
+# Pour tout effacer et recommencer
 clean:
-	rm -rf src/*.o $(EXEC)
-
-# Tout nettoyer et recommencer
-re: clean all
+	rm -f $(NAME) *.o

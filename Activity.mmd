@@ -1,0 +1,28 @@
+flowchart TD
+    Start([Lancement du jeu]) --> CreateWindow[Créer fenêtre SFML 600x600]
+    CreateWindow --> GameLoop{Fenêtre ouverte ?}
+    
+    GameLoop -->|Oui| HandleEvents[Attendre un événement]
+    HandleEvents --> CheckEvent{Type d'événement ?}
+    
+    CheckEvent -->|Fermer| CloseWindow[Fermer fenêtre]
+    CloseWindow --> End([Fin du programme])
+    
+    CheckEvent -->|Clic Souris| GameOverCheck{Partie finie ?}
+    GameOverCheck -->|Non| PlayTurn[Calculer Row/Col et jouer le coup]
+    PlayTurn --> WinCheck{Victoire ou Nul ?}
+    WinCheck -->|Oui| SetGameOver[Passer gameOver à True]
+    WinCheck -->|Non| SwitchPlayer[Changer de joueur]
+    SwitchPlayer --> DrawScreen
+    SetGameOver --> DrawScreen
+    
+    CheckEvent -->|Touche R| Reset[Réinitialiser la Grille et le Moteur]
+    Reset --> DrawScreen
+    
+    DrawScreen[Dessiner l'écran] --> Clear[Effacer la fenêtre]
+    Clear --> DrawGrid[Dessiner les lignes blanches]
+    DrawGrid --> DrawPieces[Dessiner les X et les O]
+    DrawPieces --> Display[Afficher la fenêtre]
+    Display --> GameLoop
+    
+    GameLoop -->|Non| End
